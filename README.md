@@ -16,3 +16,6 @@
 - SharedPreferences
 - Android API 31
 
+### Protótipo:
+[Figma](https://www.figma.com/proto/KDOaFHX7L2FBvm2cHPSTnZ/Untitled?node-id=2-396&t=q5gw1xfghkazWR5C-1&starting-point-node-id=2%3A396)
+
