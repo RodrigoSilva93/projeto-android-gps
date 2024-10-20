@@ -24,6 +24,7 @@
         </activity>
 
         <activity android:name=".ui.CadastroActivity" />
+        <activity android:name=".ui.ListaActivity" />
     </application>
 
 </manifest>

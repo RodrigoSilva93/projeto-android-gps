@@ -9,4 +9,6 @@
     <string name="voltar">Voltar</string>
     <string name="padrao">0.0</string>
     <string name="cadastrar">Cadastrar</string>
+    <string name="editar">Editar</string>
+    <string name="excluir">Excluir</string>
 </resources>

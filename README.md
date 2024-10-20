@@ -14,5 +14,5 @@
 - Mapa
 - Câmera
 - SharedPreferences
-- API Android 31
+- Android API 31
 

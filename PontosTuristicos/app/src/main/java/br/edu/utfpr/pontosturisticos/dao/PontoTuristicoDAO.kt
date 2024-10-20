@@ -13,7 +13,13 @@ interface PontoTuristicoDAO {
     @Query("SELECT * from PontoTuristico")
     fun getAll(): List<PontoTuristico>
 
-    @Query("SELECT * from PontoTuristico WHERE uid IN (:userIds)")
+    @Query("SELECT uid FROM PontoTuristico")
+    fun getAllIds(): List<Int>
+
+    @Query("SELECT * FROM PontoTuristico WHERE uid IN (:uid)")
+    fun getById(uid: Int): PontoTuristico
+
+    @Query("SELECT * FROM PontoTuristico WHERE uid IN (:userIds)")
     fun loadAllByIds(userIds: IntArray): List<PontoTuristico>
 
     @Insert

@@ -7,15 +7,20 @@ import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
+import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.room.Room
+import br.edu.utfpr.pontosturisticos.database.AppDatabase
 import br.edu.utfpr.pontosturisticos.ui.CadastroActivity
+import br.edu.utfpr.pontosturisticos.ui.ListaActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class MainActivity : AppCompatActivity(), LocationListener {
     private lateinit var locationManager: LocationManager
     private lateinit var btCadastrar: FloatingActionButton
+    private lateinit var btLista: Button //temp
 
     private var currentLatitude: Double? = null
     private var currentLongitude: Double? = null
@@ -24,6 +29,9 @@ class MainActivity : AppCompatActivity(), LocationListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val db = createDatabase()
+
+        btLista = findViewById(R.id.btLista) //temp
         btCadastrar = findViewById(R.id.btCadastrar)
         locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
 
@@ -43,6 +51,17 @@ class MainActivity : AppCompatActivity(), LocationListener {
         btCadastrar.setOnClickListener {
             addPontoTuristico()
         }
+
+        btLista.setOnClickListener {
+            listarPontosTuristicos(db)
+        }
+    }
+
+    private fun createDatabase(): AppDatabase {
+        return Room.databaseBuilder(
+            applicationContext,
+            AppDatabase::class.java, "ponto-turistico"
+        ).allowMainThreadQueries().build()
     }
 
     override fun onLocationChanged(location: Location) {
@@ -57,7 +76,15 @@ class MainActivity : AppCompatActivity(), LocationListener {
                 putExtra("EXTRA_LONGITUDE", currentLongitude)
             }
             startActivity(intent)
-        }
-        else Toast.makeText(this, "Localização ainda não disponível. Aguarde", Toast.LENGTH_SHORT).show()
+        } else Toast.makeText(this, "Localização ainda não disponível. Aguarde", Toast.LENGTH_SHORT)
+            .show()
+    }
+
+    private fun listarPontosTuristicos(db: AppDatabase) {
+        val ids = db.pontoTuristicoDao().getAllIds()
+
+        val intent = Intent(this, ListaActivity::class.java)
+        intent.putIntegerArrayListExtra("IDS_LIST", ArrayList(ids))
+        startActivity(intent)
     }
 }
