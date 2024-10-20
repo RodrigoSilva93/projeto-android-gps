@@ -47,7 +47,7 @@ class CadastroActivity: AppCompatActivity() {
         }
 
         btCadastrarPonto.setOnClickListener {
-            cadastrar(db, latitude, longitude)
+            cadastrar(db)
         }
     }
 
@@ -65,13 +65,15 @@ class CadastroActivity: AppCompatActivity() {
         finish()
     }
 
-    private fun cadastrar(db: AppDatabase, lat: Double, long: Double) {
+    private fun cadastrar(db: AppDatabase) {
         val pontoTuristico = PontoTuristico(db.pontoTuristicoDao().getAll().size + 1)
-        pontoTuristico.nome = textNome.toString()
-        pontoTuristico.descricao = textDescricao.toString()
-        pontoTuristico.latitude = lat.toString()
-        pontoTuristico.longitude = long.toString()
+        pontoTuristico.nome = textNome.text.toString()
+        pontoTuristico.descricao = textDescricao.text.toString()
+        pontoTuristico.latitude = textLatitude.text.toString()
+        pontoTuristico.longitude = textLongitude.text.toString()
         //câmera
+
+        db.pontoTuristicoDao().insertAll(pontoTuristico)
 
         Toast.makeText(this, "Ponto turístico registrado.", Toast.LENGTH_SHORT).show()
 
