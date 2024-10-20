@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">PontosTuristicos</string>
+    <string name="adicionar_ponto_turistico">Adicionar Ponto Turístico</string>
+    <string name="cadastrar_ponto_turistico">Cadastrar Ponto Turístico</string>
+    <string name="nome_ponto_turistico">Nome</string>
+    <string name="descricao_ponto_turistico">Descrição</string>
+    <string name="latitude">Latitude</string>
+    <string name="longitude">Longitude</string>
+    <string name="voltar">Voltar</string>
+    <string name="padrao">0.0</string>
+    <string name="cadastrar">Cadastrar</string>
+</resources>
