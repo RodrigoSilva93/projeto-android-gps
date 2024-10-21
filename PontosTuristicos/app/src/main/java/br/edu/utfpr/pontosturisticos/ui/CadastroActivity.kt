@@ -11,6 +11,7 @@ import br.edu.utfpr.pontosturisticos.MainActivity
 import br.edu.utfpr.pontosturisticos.R
 import br.edu.utfpr.pontosturisticos.database.AppDatabase
 import br.edu.utfpr.pontosturisticos.entities.PontoTuristico
+import br.edu.utfpr.pontosturisticos.utils.singleton.DatabaseSingleton
 
 class CadastroActivity: AppCompatActivity() {
 
@@ -26,7 +27,7 @@ class CadastroActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cadastro)
 
-        val db = createDatabase()
+        val db = DatabaseSingleton.getInstance(this).getAppDatabase()
         db.pontoTuristicoDao().getAll()
 
         btCadastrarPonto = findViewById(R.id.btCadastrarPonto)
@@ -42,37 +43,26 @@ class CadastroActivity: AppCompatActivity() {
         textLatitude.setText(latitude.toString())
         textLongitude.setText(longitude.toString())
 
-        btVoltar.setOnClickListener {
-            voltar()
-        }
-
-        btCadastrarPonto.setOnClickListener {
-            cadastrar(db)
-        }
-    }
-
-    private fun createDatabase(): AppDatabase {
-        return Room.databaseBuilder(
-            applicationContext,
-            AppDatabase::class.java, "ponto-turistico"
-        ).allowMainThreadQueries().build()
+        btVoltar.setOnClickListener { voltar() }
+        btCadastrarPonto.setOnClickListener { cadastrar(db) }
     }
 
     private fun voltar() {
         val intent = Intent(this, MainActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
         startActivity(intent)
+
         finish()
     }
 
     private fun cadastrar(db: AppDatabase) {
-        val pontoTuristico = PontoTuristico(db.pontoTuristicoDao().getAll().size + 1)
-        pontoTuristico.nome = textNome.text.toString()
-        pontoTuristico.descricao = textDescricao.text.toString()
-        pontoTuristico.latitude = textLatitude.text.toString()
-        pontoTuristico.longitude = textLongitude.text.toString()
-        //câmera
-
+        val pontoTuristico = PontoTuristico(
+            nome = textNome.text.toString(),
+            descricao = textDescricao.text.toString(),
+            latitude = textLatitude.text.toString(),
+            longitude = textLongitude.text.toString()
+            //câmera
+        )
         db.pontoTuristicoDao().insertAll(pontoTuristico)
 
         Toast.makeText(this, "Ponto turístico registrado.", Toast.LENGTH_SHORT).show()

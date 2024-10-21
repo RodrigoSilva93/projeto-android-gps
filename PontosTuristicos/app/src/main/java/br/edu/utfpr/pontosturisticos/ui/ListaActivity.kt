@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.room.Room
 import br.edu.utfpr.pontosturisticos.R
 import br.edu.utfpr.pontosturisticos.database.AppDatabase
+import br.edu.utfpr.pontosturisticos.utils.singleton.DatabaseSingleton
 
 class ListaActivity : AppCompatActivity() {
     private lateinit var lista: ListView
@@ -66,20 +67,13 @@ class ListaActivity : AppCompatActivity() {
     }
 
     private fun excluirPontoTuristico(id: Int) {
-        val db = createDatabase()
+        val db = DatabaseSingleton.getInstance(this).getAppDatabase()
         val pontoTuristico = db.pontoTuristicoDao().getById(id)
         db.pontoTuristicoDao().delete(pontoTuristico)
 
         Toast.makeText(this, "Ponto turístico removido.", Toast.LENGTH_SHORT).show()
 
         atualizarLista(db)
-    }
-
-    private fun createDatabase(): AppDatabase {
-        return Room.databaseBuilder(
-            applicationContext,
-            AppDatabase::class.java, "ponto-turistico"
-        ).allowMainThreadQueries().build()
     }
 
     private fun atualizarLista(db: AppDatabase) {

@@ -15,6 +15,7 @@ import androidx.room.Room
 import br.edu.utfpr.pontosturisticos.database.AppDatabase
 import br.edu.utfpr.pontosturisticos.ui.CadastroActivity
 import br.edu.utfpr.pontosturisticos.ui.ListaActivity
+import br.edu.utfpr.pontosturisticos.utils.singleton.DatabaseSingleton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class MainActivity : AppCompatActivity(), LocationListener {
@@ -29,7 +30,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val db = createDatabase()
+        val db = DatabaseSingleton.getInstance(this).getAppDatabase()
 
         btLista = findViewById(R.id.btLista) //temp
         btCadastrar = findViewById(R.id.btCadastrar)
@@ -48,20 +49,8 @@ class MainActivity : AppCompatActivity(), LocationListener {
         }
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 100, 0f, this)
 
-        btCadastrar.setOnClickListener {
-            addPontoTuristico()
-        }
-
-        btLista.setOnClickListener {
-            listarPontosTuristicos(db)
-        }
-    }
-
-    private fun createDatabase(): AppDatabase {
-        return Room.databaseBuilder(
-            applicationContext,
-            AppDatabase::class.java, "ponto-turistico"
-        ).allowMainThreadQueries().build()
+        btCadastrar.setOnClickListener { addPontoTuristico() }
+        btLista.setOnClickListener { listarPontosTuristicos(db) }
     }
 
     override fun onLocationChanged(location: Location) {

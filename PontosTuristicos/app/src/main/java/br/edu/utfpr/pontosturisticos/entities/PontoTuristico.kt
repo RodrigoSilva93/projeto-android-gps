@@ -6,19 +6,20 @@ import androidx.room.PrimaryKey
 
 @Entity
 class PontoTuristico (
-    @PrimaryKey val uid: Int
-) {
+    @PrimaryKey(autoGenerate = true)
+    val uid: Int = 0,
+
     @ColumnInfo(name = "nome")
-    var nome: String? = null
+    var nome: String? = null,
 
     @ColumnInfo(name = "descricao")
-    var descricao: String? = null
+    var descricao: String? = null,
 
     @ColumnInfo(name = "latitude")
-    var latitude: String? = null
+    var latitude: String? = null,
 
     @ColumnInfo(name = "longitude")
     var longitude: String? = null
-
+) {
     //Câmera
 }
