@@ -11,4 +11,5 @@
     <string name="cadastrar">Cadastrar</string>
     <string name="editar">Editar</string>
     <string name="excluir">Excluir</string>
+    <string name="listar_pontos_turisticos">Listar Pontos Turísticos</string>
 </resources>
