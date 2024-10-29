@@ -47,6 +47,20 @@ class CadastroActivity: AppCompatActivity() {
         btCadastrarPonto.setOnClickListener { cadastrar(db) }
     }
 
+    override fun onStart() {
+        super.onStart()
+        val id = intent.getIntExtra("ID_PONTO", 0)
+        if (id != 0) {
+            val db = DatabaseSingleton.getInstance(this).getAppDatabase()
+            val pontoTuristico = db.pontoTuristicoDao().getById(id)
+            textNome.setText(pontoTuristico.nome)
+            textDescricao.setText(pontoTuristico.descricao)
+            textLatitude.setText(pontoTuristico.latitude)
+            textLongitude.setText(pontoTuristico.longitude)
+        }
+
+    }
+
     private fun voltar() {
         val intent = Intent(this, MainActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
@@ -63,7 +77,13 @@ class CadastroActivity: AppCompatActivity() {
             longitude = textLongitude.text.toString()
             //câmera
         )
-        db.pontoTuristicoDao().insertAll(pontoTuristico)
+        if (intent.hasExtra("ID_PONTO")) {
+            val id = intent.getIntExtra("ID_PONTO", 0)
+            pontoTuristico.uid = id
+            db.pontoTuristicoDao().update(pontoTuristico)
+        } else {
+            db.pontoTuristicoDao().insertAll(pontoTuristico)
+        }
 
         Toast.makeText(this, "Ponto turístico registrado.", Toast.LENGTH_SHORT).show()
 

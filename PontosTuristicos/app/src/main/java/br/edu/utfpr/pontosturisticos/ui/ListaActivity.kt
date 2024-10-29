@@ -31,6 +31,10 @@ class ListaActivity : AppCompatActivity() {
         }
 
         registerForContextMenu(lista)
+        lista.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
+            val id = lista.adapter.getItem(position) as Int
+            editarPontoTuristico(id)
+        }
     }
 
     override fun onCreateContextMenu(
@@ -61,9 +65,9 @@ class ListaActivity : AppCompatActivity() {
     }
 
     private fun editarPontoTuristico(id: Int) {
-//        val intent = Intent(this, EditarActivity::class.java)
-//        intent.putExtra("EXTRA_ID", id)
-//        startActivity(intent)
+        val intent = Intent(this, CadastroActivity::class.java)
+        intent.putExtra("ID_PONTO", id)
+        startActivity(intent)
     }
 
     private fun excluirPontoTuristico(id: Int) {

@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 @Entity
 class PontoTuristico (
     @PrimaryKey(autoGenerate = true)
-    val uid: Int = 0,
+    var uid: Int = 0,
 
     @ColumnInfo(name = "nome")
     var nome: String? = null,
