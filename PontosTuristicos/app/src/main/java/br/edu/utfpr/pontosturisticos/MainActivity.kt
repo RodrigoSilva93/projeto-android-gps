@@ -9,14 +9,18 @@ import android.location.LocationManager
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import br.edu.utfpr.pontosturisticos.ui.CadastroActivity
+import br.edu.utfpr.pontosturisticos.entities.PontoTuristico
+import br.edu.utfpr.pontosturisticos.ui.CadastrarActivity
+import br.edu.utfpr.pontosturisticos.ui.DetalhesPontoFragment
 import br.edu.utfpr.pontosturisticos.ui.ListaActivity
 import br.edu.utfpr.pontosturisticos.utils.singleton.DatabaseSingleton
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
@@ -29,6 +33,7 @@ class MainActivity : AppCompatActivity(), LocationListener, OnMapReadyCallback {
 
     private var currentLatitude: Double = 0.0
     private var currentLongitude: Double = 0.0
+    private var currentLocation: Marker? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +55,7 @@ class MainActivity : AppCompatActivity(), LocationListener, OnMapReadyCallback {
             return
         }
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 100, 0f, this)
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
@@ -64,14 +69,19 @@ class MainActivity : AppCompatActivity(), LocationListener, OnMapReadyCallback {
 
         if (::mMap.isInitialized) {
             val localAtual = LatLng(currentLatitude, currentLongitude)
-            mMap.clear()
-            mMap.addMarker(MarkerOptions().position(localAtual).title("Você está aqui"))
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(localAtual, 10f))
+
+            if (currentLocation == null) {
+                currentLocation = mMap.addMarker(MarkerOptions().position(localAtual).title("Você está aqui"))
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(localAtual, 14f))
+            } else {
+                currentLocation?.position = localAtual
+                mMap.animateCamera(CameraUpdateFactory.newLatLng(localAtual))
+            }
         }
     }
 
     private fun addPontoTuristico() {
-        val intent = Intent(this, CadastroActivity::class.java).apply {
+        val intent = Intent(this, CadastrarActivity::class.java).apply {
             putExtra("EXTRA_LATITUDE", currentLatitude)
             putExtra("EXTRA_LONGITUDE", currentLongitude)
             putExtra("ORIGIN", "main")
@@ -91,8 +101,31 @@ class MainActivity : AppCompatActivity(), LocationListener, OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
-        val home = LatLng(currentLatitude, currentLongitude)
-        mMap.addMarker(MarkerOptions().position(home).title("Marker in Home"))
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(home, 10f))
+        val mapMarkerPonto = mutableMapOf<Marker, PontoTuristico>()
+
+        val db = DatabaseSingleton.getInstance(this).getAppDatabase()
+        val marcadores = db.pontoTuristicoDao().getAll()
+
+        for (ponto in marcadores) {
+            val localizacao = LatLng(ponto.latitude!!.toDouble(), ponto.longitude!!.toDouble())
+            val marcador = mMap.addMarker(MarkerOptions()
+                .position(localizacao)
+                .title(ponto.nome)
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)))
+
+            if (marcador != null) mapMarkerPonto[marcador] = ponto
+        }
+
+        //chama detalhes fragment
+        mMap.setOnMarkerClickListener { marker ->
+            val pontoTuristico = mapMarkerPonto[marker]
+
+            if (pontoTuristico != null) {
+                val detalhesFragment = DetalhesPontoFragment.newInstance(pontoTuristico)
+                detalhesFragment.show(supportFragmentManager, "DetalhesPontoFragment")
+            }
+
+            true
+        }
     }
 }

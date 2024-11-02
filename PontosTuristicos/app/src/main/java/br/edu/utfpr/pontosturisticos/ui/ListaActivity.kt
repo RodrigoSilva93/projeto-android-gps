@@ -10,7 +10,6 @@ import android.widget.ArrayAdapter
 import android.widget.ListView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.room.Room
 import br.edu.utfpr.pontosturisticos.R
 import br.edu.utfpr.pontosturisticos.database.AppDatabase
 import br.edu.utfpr.pontosturisticos.utils.singleton.DatabaseSingleton
@@ -65,7 +64,7 @@ class ListaActivity : AppCompatActivity() {
     }
 
     private fun editarPontoTuristico(id: Int) {
-        val intent = Intent(this, CadastroActivity::class.java).apply {
+        val intent = Intent(this, CadastrarActivity::class.java).apply {
             putExtra("ID_PONTO", id)
             putExtra("ORIGIN", "menu")
         }

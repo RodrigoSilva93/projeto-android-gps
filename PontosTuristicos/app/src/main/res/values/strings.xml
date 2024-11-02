@@ -14,4 +14,6 @@
     <string name="listar_pontos_turisticos">Listar Pontos Turísticos</string>
     <string name="endereco">Endereço</string>
     <string name="salvar">Salvar</string>
+    <string name="nome">Nome</string>
+    <string name="descricao">Descrição</string>
 </resources>

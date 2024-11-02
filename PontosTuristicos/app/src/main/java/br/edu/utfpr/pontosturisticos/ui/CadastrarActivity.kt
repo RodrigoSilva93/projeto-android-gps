@@ -19,7 +19,7 @@ import br.edu.utfpr.pontosturisticos.utils.singleton.DatabaseSingleton
 import java.io.IOException
 import java.util.Locale
 
-class CadastroActivity: AppCompatActivity() {
+class CadastrarActivity: AppCompatActivity() {
 
     private lateinit var tvCadEdit: TextView
 
@@ -34,7 +34,7 @@ class CadastroActivity: AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_cadastro)
+        setContentView(R.layout.activity_cadastrar)
 
         val db = DatabaseSingleton.getInstance(this).getAppDatabase()
         db.pontoTuristicoDao().getAll()
