@@ -7,7 +7,7 @@ import br.edu.utfpr.pontosturisticos.dao.PontoTuristicoDAO
 import br.edu.utfpr.pontosturisticos.entities.PontoTuristico
 import br.edu.utfpr.pontosturisticos.utils.converter.PontoTuristicoConverter
 
-@Database(entities = [PontoTuristico::class], version = 2)
+@Database(entities = [PontoTuristico::class], version = 1)
 @TypeConverters(value = [PontoTuristicoConverter::class])
 abstract class AppDatabase: RoomDatabase() {
     abstract fun pontoTuristicoDao(): PontoTuristicoDAO

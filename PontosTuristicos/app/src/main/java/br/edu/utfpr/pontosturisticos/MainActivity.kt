@@ -74,6 +74,7 @@ class MainActivity : AppCompatActivity(), LocationListener, OnMapReadyCallback {
         val intent = Intent(this, CadastroActivity::class.java).apply {
             putExtra("EXTRA_LATITUDE", currentLatitude)
             putExtra("EXTRA_LONGITUDE", currentLongitude)
+            putExtra("ORIGIN", "main")
         }
         startActivity(intent)
     }

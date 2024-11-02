@@ -18,7 +18,7 @@ import br.edu.utfpr.pontosturisticos.utils.singleton.DatabaseSingleton
 class ListaActivity : AppCompatActivity() {
     private lateinit var lista: ListView
 
-    override fun onCreate(savedInstanceState: Bundle??) {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lista)
 
@@ -65,8 +65,10 @@ class ListaActivity : AppCompatActivity() {
     }
 
     private fun editarPontoTuristico(id: Int) {
-        val intent = Intent(this, CadastroActivity::class.java)
-        intent.putExtra("ID_PONTO", id)
+        val intent = Intent(this, CadastroActivity::class.java).apply {
+            putExtra("ID_PONTO", id)
+            putExtra("ORIGIN", "menu")
+        }
         startActivity(intent)
     }
 

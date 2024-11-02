@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tvCadEdit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -20,14 +20,14 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/text_layout_nome"
-        android:layout_width="409dp"
-        android:layout_height="wrap_content"
+        android:layout_width="345dp"
+        android:layout_height="60dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="68dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView">
+        app:layout_constraintTop_toBottomOf="@+id/tvCadEdit">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/text_nome"
@@ -38,8 +38,8 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/text_layout_descricao"
-        android:layout_width="409dp"
-        android:layout_height="wrap_content"
+        android:layout_width="343dp"
+        android:layout_height="60dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="32dp"
@@ -56,8 +56,8 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/text_layout_latitude"
-        android:layout_width="409dp"
-        android:layout_height="wrap_content"
+        android:layout_width="345dp"
+        android:layout_height="60dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="32dp"
@@ -77,8 +77,8 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/text_layout_longitude"
-        android:layout_width="409dp"
-        android:layout_height="wrap_content"
+        android:layout_width="345dp"
+        android:layout_height="60dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="32dp"
@@ -112,11 +112,28 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="64dp"
         android:layout_marginBottom="68dp"
-        android:text="@string/cadastrar"
+        android:text="@string/salvar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/text_layout_endereco"
+        android:layout_width="345dp"
+        android:layout_height="120dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_layout_longitude">
 
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/text_endereco"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:hint="@string/endereco" />
+    </com.google.android.material.textfield.TextInputLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
