@@ -47,4 +47,19 @@
         app:maxImageSize="24dp"
         app:srcCompat="@android:drawable/ic_input_get" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btConfig"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_above="@+id/btCadastrar"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="304dp"
+        android:layout_marginEnd="27dp"
+        android:layout_marginBottom="530dp"
+        android:clickable="true"
+        android:contentDescription="@string/configuracoes_aplicativo"
+        app:maxImageSize="24dp"
+        app:srcCompat="@android:drawable/ic_menu_manage" />
+
 </RelativeLayout>

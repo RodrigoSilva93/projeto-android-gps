@@ -9,6 +9,7 @@ import android.location.LocationManager
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.preference.PreferenceManager
 import br.edu.utfpr.pontosturisticos.entities.PontoTuristico
 import br.edu.utfpr.pontosturisticos.ui.CadastrarActivity
 import br.edu.utfpr.pontosturisticos.ui.DetalhesPontoFragment
@@ -28,6 +29,7 @@ class MainActivity : AppCompatActivity(), LocationListener, OnMapReadyCallback {
     private lateinit var locationManager: LocationManager
     private lateinit var btCadastrar: FloatingActionButton
     private lateinit var btLista: FloatingActionButton //temp
+    private lateinit var btConfig: FloatingActionButton
 
     private lateinit var mMap: GoogleMap
 
@@ -41,6 +43,7 @@ class MainActivity : AppCompatActivity(), LocationListener, OnMapReadyCallback {
 		
         btLista = findViewById(R.id.btListar) //temp
         btCadastrar = findViewById(R.id.btCadastrar)
+        btConfig= findViewById(R.id.btConfig)
         locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
 
         if (ActivityCompat.checkSelfPermission(
@@ -61,6 +64,20 @@ class MainActivity : AppCompatActivity(), LocationListener, OnMapReadyCallback {
 
         btCadastrar.setOnClickListener { addPontoTuristico() }
         btLista.setOnClickListener { listarPontosTuristicos() }
+        btConfig.setOnClickListener { abrirConfiguracoes() }
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (::mMap.isInitialized) {
+            aplicarConfig()
+        }
+    }
+
+    private fun abrirConfiguracoes() {
+        val  intent = Intent( this, SettingsActivity::class.java  )
+        startActivity( intent )
     }
 
     override fun onLocationChanged(location: Location) {
@@ -98,8 +115,34 @@ class MainActivity : AppCompatActivity(), LocationListener, OnMapReadyCallback {
         startActivity(intent)
     }
 
+    private fun aplicarConfig(){
+
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        val tipoMapa = sharedPreferences.getString("tipo", "Híbrido")
+        val zoomPreferencia = sharedPreferences.getString("zoom", "Médio")
+
+        mMap.mapType = when (tipoMapa) {
+            "Satélite" -> GoogleMap.MAP_TYPE_SATELLITE
+            "Rodoviário" -> GoogleMap.MAP_TYPE_NORMAL
+            "Híbrido" -> GoogleMap.MAP_TYPE_HYBRID
+            else -> GoogleMap.MAP_TYPE_NORMAL
+        }
+
+        val zoomLevel = when (zoomPreferencia) {
+            "Próximo" -> 18.0f
+            "Médio" -> 12.0f
+            "Distante" -> 6.0f
+            else -> 12.0f
+        }
+
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(currentLatitude, currentLongitude), zoomLevel))
+
+    }
+
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
+
+        aplicarConfig()
 
         val mapMarkerPonto = mutableMapOf<Marker, PontoTuristico>()
 
