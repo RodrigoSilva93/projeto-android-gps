@@ -126,7 +126,6 @@ class CadastrarActivity : AppCompatActivity() {
         textLongitude.setText(ponto.longitude)
         textEndereco.setText(ponto.endereco)
         val imagemCaminho = ponto.imagem
-        println(imagemCaminho)
 
         if (imagemCaminho != null) {
             if (imagemCaminho.isNotEmpty()) {
