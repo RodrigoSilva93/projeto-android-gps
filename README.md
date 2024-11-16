@@ -11,6 +11,7 @@
 ### Tecnologias:
 - Room (Sqlite)
 - GPS
+- Geocode API
 - Mapa
 - Câmera
 - SharedPreferences

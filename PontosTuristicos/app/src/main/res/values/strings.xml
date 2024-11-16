@@ -16,4 +16,19 @@
     <string name="salvar">Salvar</string>
     <string name="nome">Nome</string>
     <string name="descricao">Descrição</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+    <string name="configuracoes_aplicativo">Configurações do Aplicativo</string>
+    <!-- Preference Titles -->
+    <string name="maps_header">Mapa</string>
+    <string name="sync_header">Sync</string>
+    <!-- Messages Preferences -->
+    <string name="zoom_title">Zoom padrão</string>
+    <string name="tipo_title">Tipo de mapa padrão</string>
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails</string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="foto_ponto_turistico">Foto Ponto Turístico</string>
+    <string name="adicionar_imagem">Adicionar Imagem</string>
 </resources>

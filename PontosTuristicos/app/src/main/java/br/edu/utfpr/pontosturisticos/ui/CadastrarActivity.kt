@@ -1,18 +1,32 @@
 package br.edu.utfpr.pontosturisticos.ui
 
+import android.Manifest
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
 import android.location.Geocoder
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import br.edu.utfpr.pontosturisticos.R
 import br.edu.utfpr.pontosturisticos.entities.PontoTuristico
 import br.edu.utfpr.pontosturisticos.utils.singleton.DatabaseSingleton
+import java.io.File
 import java.io.IOException
+import java.text.SimpleDateFormat
 import java.util.Locale
 
 class CadastrarActivity : AppCompatActivity() {
@@ -31,6 +45,13 @@ class CadastrarActivity : AppCompatActivity() {
     private lateinit var textLatitude: EditText
     private lateinit var textLongitude: EditText
     private lateinit var textEndereco: EditText
+
+    private lateinit var ivImagem: ImageView
+    private lateinit var btAddImagem: Button
+    private var imagemUri: Uri? = null
+    private val requestCameraPermission = 100
+    private val requestImageCapture = 101
+    private var imageFile: File? = null
 
     private var pontoId: Int = 0
     private var isEditMode: Boolean = false
@@ -55,6 +76,20 @@ class CadastrarActivity : AppCompatActivity() {
         }
     }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == requestCameraPermission) {
+            if (grantResults.isNotEmpty() && grantResults.all { it == PackageManager.PERMISSION_GRANTED })
+                Toast.makeText(this, "Permissões concedidas.", Toast.LENGTH_SHORT).show()
+            else
+                Toast.makeText(this, "Permissões necessárias não foram concedidas.", Toast.LENGTH_SHORT).show()
+        }
+    }
+
     private fun initViews() {
         tvCadEdit = findViewById(R.id.tvCadEdit)
         btCadastrarPonto = findViewById(R.id.btCadastrarPonto)
@@ -64,6 +99,9 @@ class CadastrarActivity : AppCompatActivity() {
         textLatitude = findViewById(R.id.text_latitude)
         textLongitude = findViewById(R.id.text_longitude)
         textEndereco = findViewById(R.id.text_endereco)
+        ivImagem = findViewById(R.id.ivImagem)
+        btAddImagem = findViewById(R.id.btAddImagem)
+
     }
 
     private fun setupMode() {
@@ -87,11 +125,51 @@ class CadastrarActivity : AppCompatActivity() {
         textLatitude.setText(ponto.latitude)
         textLongitude.setText(ponto.longitude)
         textEndereco.setText(ponto.endereco)
+        val imagemCaminho = ponto.imagem
+        println(imagemCaminho)
+
+        if (imagemCaminho != null) {
+            if (imagemCaminho.isNotEmpty()) {
+                val file = File(imagemCaminho)
+                if (file.exists()) {
+                    val bitmap = BitmapFactory.decodeFile(file.absolutePath)
+                    println(bitmap)
+
+                    if (bitmap != null)
+                        ivImagem.setImageBitmap(bitmap)
+                    else
+                        Toast.makeText(this, "Erro ao carregar a imagem.", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "Imagem não encontrada.", Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                Toast.makeText(this, "Nenhuma imagem associada a este ponto.", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun configureButtons() {
         btVoltar.setOnClickListener { finish() }
         btCadastrarPonto.setOnClickListener { savePonto() }
+        btAddImagem.setOnClickListener {
+            if (checkPermissions()) {
+                val photoFile = createImageFile()
+                val photoURI = FileProvider.getUriForFile(
+                    this,
+                    "${applicationContext.packageName}.fileprovider",
+                    photoFile
+                )
+                imagemUri = photoURI
+                val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
+                    putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                }
+                if (takePictureIntent.resolveActivity(packageManager) != null) {
+                    startActivityForResult(takePictureIntent, requestImageCapture)
+                }
+            } else {
+                requestPermissions()
+            }
+        }
     }
 
     private fun savePonto() {
@@ -107,7 +185,8 @@ class CadastrarActivity : AppCompatActivity() {
             descricao = textDescricao.text.toString(),
             latitude = textLatitude.text.toString(),
             longitude = textLongitude.text.toString(),
-            endereco = textEndereco.text.toString()
+            endereco = textEndereco.text.toString(),
+            imagem = imageFile?.absolutePath ?: ""
         )
 
         if (isEditMode) {
@@ -142,6 +221,44 @@ class CadastrarActivity : AppCompatActivity() {
         } catch (e: IOException) {
             Toast.makeText(this, "Erro ao buscar endereço.", Toast.LENGTH_SHORT).show()
             callback(null)
+        }
+    }
+
+    private fun checkPermissions(): Boolean {
+        val cameraPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+        return cameraPermission == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun requestPermissions() {
+        val permissions = mutableListOf(Manifest.permission.CAMERA)
+
+        ActivityCompat.requestPermissions(this, permissions.toTypedArray(), requestCameraPermission)
+    }
+
+    @Throws(IOException::class)
+    private fun createImageFile(): File {
+        val timeStamp = SimpleDateFormat.getDateTimeInstance()
+        val storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        return File.createTempFile("JPEG_${timeStamp}_", ".jpg", storageDir).apply {
+            imageFile = this
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == requestImageCapture && resultCode == Activity.RESULT_OK) {
+            if (imagemUri != null) {
+                val inputStream = contentResolver.openInputStream(imagemUri!!)
+                val bitmap = BitmapFactory.decodeStream(inputStream)
+                inputStream?.close()
+
+                if (bitmap != null)
+                    ivImagem.setImageBitmap(bitmap)
+                else
+                    Toast.makeText(this, "Erro ao carregar a imagem capturada.", Toast.LENGTH_SHORT).show()
+            }
+            else
+                Toast.makeText(this, "Erro ao capturar a imagem.", Toast.LENGTH_SHORT).show()
         }
     }
 }

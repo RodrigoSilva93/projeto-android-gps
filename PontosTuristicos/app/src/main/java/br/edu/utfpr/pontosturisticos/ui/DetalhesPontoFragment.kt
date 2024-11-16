@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import br.edu.utfpr.pontosturisticos.MainActivity
@@ -22,6 +23,7 @@ class DetalhesPontoFragment : BottomSheetDialogFragment() {
     private lateinit var tvEndereco: TextView
     private lateinit var tvLatitude: TextView
     private lateinit var tvLongitude: TextView
+    private lateinit var ivDetailImagem: ImageView
     private lateinit var btnEditar: Button
     private lateinit var btnExcluir: Button
     private lateinit var onDataChanged: () -> Unit
@@ -38,6 +40,7 @@ class DetalhesPontoFragment : BottomSheetDialogFragment() {
         tvEndereco = view.findViewById(R.id.tvEndereco)
         tvLatitude = view.findViewById(R.id.tvLatitude)
         tvLongitude = view.findViewById(R.id.tvLongitude)
+        ivDetailImagem = view.findViewById(R.id.ivDetailImagem)
         btnEditar = view.findViewById(R.id.btnEditar)
         btnExcluir = view.findViewById(R.id.btnExcluir)
 

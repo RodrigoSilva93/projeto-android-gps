@@ -8,6 +8,15 @@
     android:layout_marginTop="8dp"
     android:layout_marginBottom="8dp">
 
+    <ImageView
+        android:id="@+id/ivDetailImagem"
+        android:layout_width="wrap_content"
+        android:layout_height="150dp"
+        android:contentDescription="@string/foto_ponto_turistico"
+        android:paddingBottom="12dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/nophoto" />
+
     <!-- Nome -->
     <TextView
         android:layout_width="wrap_content"
