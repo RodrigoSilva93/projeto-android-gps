@@ -3,61 +3,121 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp">
-    
+    android:padding="16dp"
+    android:background="?android:attr/colorBackground"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="8dp">
+
+    <ImageView
+        android:id="@+id/ivDetailImagem"
+        android:layout_width="wrap_content"
+        android:layout_height="150dp"
+        android:contentDescription="@string/foto_ponto_turistico"
+        android:paddingBottom="12dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/nophoto" />
+
+    <!-- Nome -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/nome"/>
+        android:text="@string/nome"
+        android:textStyle="bold"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="18sp"
+        android:layout_marginBottom="4dp" />
 
     <TextView
         android:id="@+id/tvNome"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text=""/>
+        android:textColor="?android:attr/textColorSecondary"
+        android:textSize="16sp"
+        android:paddingBottom="12dp" />
 
+    <!-- Descrição -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/descricao"/>
+        android:text="@string/descricao"
+        android:textStyle="bold"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="18sp"
+        android:layout_marginBottom="4dp" />
 
     <TextView
         android:id="@+id/tvDescricao"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text=""/>
+        android:textColor="?android:attr/textColorSecondary"
+        android:textSize="16sp"
+        android:paddingBottom="12dp" />
 
+    <!-- Endereço -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/endereco"/>
+        android:text="@string/endereco"
+        android:textStyle="bold"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="18sp"
+        android:layout_marginBottom="4dp" />
 
     <TextView
         android:id="@+id/tvEndereco"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text=""/>
+        android:textColor="?android:attr/textColorSecondary"
+        android:textSize="16sp"
+        android:paddingBottom="12dp" />
 
+    <!-- Latitude -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/latitude"/>
+        android:text="@string/latitude"
+        android:textStyle="bold"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="18sp"
+        android:layout_marginBottom="4dp" />
 
     <TextView
         android:id="@+id/tvLatitude"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text=""/>
+        android:textColor="?android:attr/textColorSecondary"
+        android:textSize="16sp"
+        android:paddingBottom="12dp" />
 
+    <!-- Longitude -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/longitude"/>
+        android:text="@string/longitude"
+        android:textStyle="bold"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="18sp"
+        android:layout_marginBottom="4dp" />
 
     <TextView
         android:id="@+id/tvLongitude"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text=""/>
+        android:textColor="?android:attr/textColorSecondary"
+        android:textSize="16sp"
+        android:paddingBottom="12dp" />
+    <Button
+        android:id="@+id/btnEditar"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/editar" />
+    <Button
+        android:id="@+id/btnExcluir"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/excluir" />
+
 
 </LinearLayout>

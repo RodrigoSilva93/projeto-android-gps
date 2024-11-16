@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="tipo">
+        <item>Satélite</item>
+        <item>Rodoviário</item>
+        <item>Híbrido</item>
+    </string-array>
+    <string-array name="zoom">
+        <item>Próximo</item>
+        <item>Médio</item>
+        <item>Distante</item>
+    </string-array>
+</resources>
