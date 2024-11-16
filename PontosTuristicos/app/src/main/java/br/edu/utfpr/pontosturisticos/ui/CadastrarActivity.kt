@@ -1,13 +1,17 @@
 package br.edu.utfpr.pontosturisticos.ui
-
+import android.Manifest
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
 import android.location.Geocoder
 import android.location.Geocoder.GeocodeListener
 import android.os.Build
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -18,6 +22,15 @@ import br.edu.utfpr.pontosturisticos.entities.PontoTuristico
 import br.edu.utfpr.pontosturisticos.utils.singleton.DatabaseSingleton
 import java.io.IOException
 import java.util.Locale
+import android.net.Uri
+import android.os.Environment
+import android.provider.MediaStore
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
+import java.io.File
+import java.text.SimpleDateFormat
+import java.util.Date
 
 class CadastrarActivity: AppCompatActivity() {
 
@@ -31,6 +44,13 @@ class CadastrarActivity: AppCompatActivity() {
     private lateinit var textLatitude: EditText
     private lateinit var textLongitude: EditText
     private lateinit var textEndereco: EditText
+
+    private lateinit var ivImagem: ImageView
+    private lateinit var btAddImagem: Button
+    private var imagemUri: Uri? = null
+    private val REQUESTCAMERAPERMISSION = 100
+    private val requestImageCapture = 101
+    private var imageFile: File? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,6 +84,31 @@ class CadastrarActivity: AppCompatActivity() {
             else textEndereco.setText("")
         }
 
+        ivImagem = findViewById(R.id.ivImagem)
+        btAddImagem = findViewById(R.id.btAddImagem)
+
+        btAddImagem.setOnClickListener {
+            if (checkPermissions()) {
+                val photoFile = createImageFile()
+
+                val photoURI = FileProvider.getUriForFile(
+                    this,
+                    "${applicationContext.packageName}.fileprovider",
+                    photoFile
+                )
+
+                val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
+                    putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                }
+
+                if (takePictureIntent.resolveActivity(packageManager) != null) {
+                    startActivityForResult(takePictureIntent, requestImageCapture)
+                }
+            } else {
+                requestPermissions()
+            }
+        }
+
         btVoltar.setOnClickListener { voltar() }
         btCadastrarPonto.setOnClickListener { cadastrar(db) }
     }
@@ -92,13 +137,17 @@ class CadastrarActivity: AppCompatActivity() {
     }
 
     private fun cadastrar(db: AppDatabase) {
+        // Verifica se imageFile não é nulo antes de continuar
+        val imagemPath = imageFile?.absolutePath ?: ""
+
         val pontoTuristico = PontoTuristico(
             nome = textNome.text.toString(),
             descricao = textDescricao.text.toString(),
             latitude = textLatitude.text.toString(),
             longitude = textLongitude.text.toString(),
-            endereco = textEndereco.text.toString()
+            endereco = textEndereco.text.toString(),
             //câmera
+            imagem = imagemPath
         )
         if (intent.hasExtra("ID_PONTO")) {
             val id = intent.getIntExtra("ID_PONTO", 0)
@@ -145,4 +194,38 @@ class CadastrarActivity: AppCompatActivity() {
             callback(null) //return
         }
     }
+
+    // Verifica as permissões
+    private fun checkPermissions(): Boolean {
+        val cameraPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+        val storagePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+
+        return cameraPermission == PackageManager.PERMISSION_GRANTED && storagePermission == PackageManager.PERMISSION_GRANTED
+    }
+
+    // Solicita as permissões
+    private fun requestPermissions() {
+        ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE), REQUESTCAMERAPERMISSION)
+    }
+
+    @Throws(IOException::class)
+    private fun createImageFile(): File {
+        // Criar um arquivo temporário para a foto
+        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        return File.createTempFile("JPEG_${timeStamp}_", ".jpg", storageDir)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == requestImageCapture && resultCode == Activity.RESULT_OK) {
+            val imageUri = Uri.parse(imagemUri.toString())
+            imageFile = File(imageUri.path) // Atribui o arquivo à variável
+
+            val bitmap = BitmapFactory.decodeFile(imageFile?.absolutePath)
+            ivImagem.setImageBitmap(bitmap) // Exibe a imagem no ImageView
+        }
+    }
+
 }

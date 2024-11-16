@@ -1,139 +1,139 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="16dp">
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tvCadEdit"
-        android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/tvCadEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:gravity="center"
+            android:text="@string/cadastrar_ponto_turistico"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_layout_nome"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/text_nome"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/nome_ponto_turistico" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_layout_descricao"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/text_descricao"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/descricao_ponto_turistico" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_layout_latitude"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/text_latitude"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:focusable="false"
+                android:hint="@string/latitude" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_layout_longitude"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/text_longitude"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:focusable="false"
+                android:hint="@string/longitude" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_layout_endereco"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/text_endereco"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:hint="@string/endereco" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/ivImagem"
+                android:layout_width="wrap_content"
+                android:layout_height="150dp"
+                android:elevation="4dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/nophoto"
+                />
+
+            <Button
+                android:id="@+id/btAddImagem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/adicionar_imagem"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/cadastrar_ponto_turistico"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/text_layout_nome"
-        android:layout_width="345dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvCadEdit">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/text_nome"
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/btVoltar"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="@string/nome_ponto_turistico" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_weight="1"
+            android:layout_marginEnd="16dp"
+            android:text="@string/voltar" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/text_layout_descricao"
-        android:layout_width="343dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="32dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_layout_nome">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/text_descricao"
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/btCadastrarPonto"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="@string/descricao_ponto_turistico" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_weight="1"
+            android:text="@string/salvar" />
+    </LinearLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/text_layout_latitude"
-        android:layout_width="345dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="32dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_layout_descricao">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/text_latitude"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:enabled="false"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:hint="@string/latitude" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/text_layout_longitude"
-        android:layout_width="345dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="32dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_layout_latitude">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/text_longitude"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:enabled="false"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:hint="@string/longitude" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <Button
-        android:id="@+id/btVoltar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="64dp"
-        android:layout_marginBottom="68dp"
-        android:text="@string/voltar"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/btCadastrarPonto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="64dp"
-        android:layout_marginBottom="68dp"
-        android:text="@string/salvar"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/text_layout_endereco"
-        android:layout_width="345dp"
-        android:layout_height="120dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="32dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_layout_longitude">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/text_endereco"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:enabled="false"
-            android:hint="@string/endereco" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

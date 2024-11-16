@@ -22,7 +22,11 @@ class PontoTuristico (
     var longitude: String? = null,
 
     @ColumnInfo(name = "endereco")
-    var endereco: String? = null
+    var endereco: String? = null,
+
+    @ColumnInfo(name = "foto")
+    var imagem: String? = null
+
 ) {
     //Câmera
 }
