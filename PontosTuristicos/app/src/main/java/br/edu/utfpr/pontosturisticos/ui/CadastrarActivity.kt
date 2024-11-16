@@ -1,7 +1,6 @@
 package br.edu.utfpr.pontosturisticos.ui
 
 import android.content.Context
-import android.content.Intent
 import android.location.Geocoder
 import android.os.Build
 import android.os.Bundle
@@ -11,7 +10,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import br.edu.utfpr.pontosturisticos.R
-import br.edu.utfpr.pontosturisticos.database.AppDatabase
 import br.edu.utfpr.pontosturisticos.entities.PontoTuristico
 import br.edu.utfpr.pontosturisticos.utils.singleton.DatabaseSingleton
 import java.io.IOException
@@ -45,13 +43,15 @@ class CadastrarActivity : AppCompatActivity() {
         setupMode()
         configureButtons()
 
-        val latitude = intent.getDoubleExtra(EXTRA_LATITUDE, 0.0)
-        val longitude = intent.getDoubleExtra(EXTRA_LONGITUDE, 0.0)
-        textLatitude.setText(latitude.toString())
-        textLongitude.setText(longitude.toString())
+        if (!isEditMode) {
+            val latitude = intent.getDoubleExtra(EXTRA_LATITUDE, 0.0)
+            val longitude = intent.getDoubleExtra(EXTRA_LONGITUDE, 0.0)
+            textLatitude.setText(latitude.toString())
+            textLongitude.setText(longitude.toString())
 
-        getAddressFromLocation(latitude, longitude, this) { endereco ->
-            textEndereco.setText(endereco ?: "")
+            getAddressFromLocation(latitude, longitude, this) { endereco ->
+                textEndereco.setText(endereco ?: "")
+            }
         }
     }
 
@@ -72,13 +72,13 @@ class CadastrarActivity : AppCompatActivity() {
 
         if (isEditMode) {
             tvCadEdit.text = getString(R.string.editar_ponto_turistico)
-            loadPontoData(pontoId)
+            carregarPonto(pontoId)
         } else {
             tvCadEdit.text = getString(R.string.cadastrar_ponto_turistico)
         }
     }
 
-    private fun loadPontoData(id: Int) {
+    private fun carregarPonto(id: Int) {
         val db = DatabaseSingleton.getInstance(this).getAppDatabase()
         val ponto = db.pontoTuristicoDao().getById(id)
 

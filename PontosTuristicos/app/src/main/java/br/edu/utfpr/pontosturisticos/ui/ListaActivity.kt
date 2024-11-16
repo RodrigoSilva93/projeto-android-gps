@@ -1,6 +1,6 @@
 package br.edu.utfpr.pontosturisticos.ui
 
-import PontoTuristicoAdapter
+import br.edu.utfpr.pontosturisticos.adapter.PontoTuristicoAdapter
 import android.content.Intent
 import android.os.Bundle
 import android.widget.ListView

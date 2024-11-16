@@ -1,5 +1,6 @@
+package br.edu.utfpr.pontosturisticos.adapter
+
 import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +10,6 @@ import android.widget.TextView
 import android.widget.Toast
 import br.edu.utfpr.pontosturisticos.R
 import br.edu.utfpr.pontosturisticos.entities.PontoTuristico
-import br.edu.utfpr.pontosturisticos.ui.CadastrarActivity
 import br.edu.utfpr.pontosturisticos.ui.ListaActivity
 import br.edu.utfpr.pontosturisticos.utils.singleton.DatabaseSingleton
 
