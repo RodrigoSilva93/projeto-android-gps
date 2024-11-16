@@ -1,5 +1,6 @@
 package br.edu.utfpr.pontosturisticos.ui
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import br.edu.utfpr.pontosturisticos.MainActivity
 import br.edu.utfpr.pontosturisticos.R
 import br.edu.utfpr.pontosturisticos.entities.PontoTuristico
 import br.edu.utfpr.pontosturisticos.utils.singleton.DatabaseSingleton
@@ -22,6 +24,7 @@ class DetalhesPontoFragment : BottomSheetDialogFragment() {
     private lateinit var tvLongitude: TextView
     private lateinit var btnEditar: Button
     private lateinit var btnExcluir: Button
+    private lateinit var onDataChanged: () -> Unit
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,11 +50,10 @@ class DetalhesPontoFragment : BottomSheetDialogFragment() {
         }
 
         btnEditar.setOnClickListener {
-            val intent = Intent(context, CadastrarActivity::class.java).apply {
-                putExtra("ID_PONTO", arguments?.getInt("ID"))
-            }
+            dismiss()
+            val intent = Intent(context, CadastrarActivity::class.java)
+            intent.putExtra("ID_PONTO", arguments?.getInt("ID"))
             startActivity(intent)
-            dismiss()  // Fecha o fragmento após abrir a activity
         }
 
         btnExcluir.setOnClickListener {
@@ -67,13 +69,14 @@ class DetalhesPontoFragment : BottomSheetDialogFragment() {
             db.pontoTuristicoDao().delete(pontoTuristico)
             dismiss()  // Fecha o fragmento após a exclusão
             Toast.makeText(context, "Ponto turístico excluído", Toast.LENGTH_SHORT).show()
+            onDataChanged()
         }
 
         return view
     }
 
     companion object {
-        fun newInstance(ponto: PontoTuristico): DetalhesPontoFragment {
+        fun newInstance(ponto: PontoTuristico, onDataChanged: () -> Unit ): DetalhesPontoFragment {
             val fragment = DetalhesPontoFragment()
             val args = Bundle().apply {
                 putInt("ID", ponto.uid)
@@ -84,6 +87,7 @@ class DetalhesPontoFragment : BottomSheetDialogFragment() {
                 putString("LONGITUDE", ponto.longitude)
             }
             fragment.arguments = args
+            fragment.onDataChanged = onDataChanged
             return fragment
         }
     }

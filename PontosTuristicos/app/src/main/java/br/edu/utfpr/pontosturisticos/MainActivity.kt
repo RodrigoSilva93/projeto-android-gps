@@ -7,6 +7,7 @@ import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import br.edu.utfpr.pontosturisticos.entities.PontoTuristico
@@ -23,11 +24,12 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import java.lang.Thread.sleep
 
 class MainActivity : AppCompatActivity(), LocationListener, OnMapReadyCallback {
     private lateinit var locationManager: LocationManager
     private lateinit var btCadastrar: FloatingActionButton
-    private lateinit var btLista: FloatingActionButton //temp
+    private lateinit var btLista: FloatingActionButton
 
     private lateinit var mMap: GoogleMap
 
@@ -71,7 +73,7 @@ class MainActivity : AppCompatActivity(), LocationListener, OnMapReadyCallback {
             val localAtual = LatLng(currentLatitude, currentLongitude)
 
             if (currentLocation == null) {
-                currentLocation = mMap.addMarker(MarkerOptions().position(localAtual).title("Você está aqui"))
+                currentLocation = mMap.addMarker(MarkerOptions().position(localAtual).title("Você está aqui").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)))
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(localAtual, 14f))
             } else {
                 currentLocation?.position = localAtual
@@ -100,9 +102,17 @@ class MainActivity : AppCompatActivity(), LocationListener, OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
+        carregarMarcadores()
+    }
+
+    fun carregarMarcadores(){
+        if (!::mMap.isInitialized) return
+        mMap.clear()
+
+        currentLocation = mMap.addMarker(MarkerOptions().position(LatLng(currentLatitude, currentLongitude)).title("Você está aqui"))
+        mMap.animateCamera(CameraUpdateFactory.newLatLng(LatLng(currentLatitude, currentLongitude)))
 
         val mapMarkerPonto = mutableMapOf<Marker, PontoTuristico>()
-
         val db = DatabaseSingleton.getInstance(this).getAppDatabase()
         val marcadores = db.pontoTuristicoDao().getAll()
 
@@ -121,11 +131,18 @@ class MainActivity : AppCompatActivity(), LocationListener, OnMapReadyCallback {
             val pontoTuristico = mapMarkerPonto[marker]
 
             if (pontoTuristico != null) {
-                val detalhesFragment = DetalhesPontoFragment.newInstance(pontoTuristico)
+                val detalhesFragment = DetalhesPontoFragment.newInstance(pontoTuristico){
+                    carregarMarcadores()
+                }
                 detalhesFragment.show(supportFragmentManager, "DetalhesPontoFragment")
             }
 
             true
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        carregarMarcadores()
     }
 }
