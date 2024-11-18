@@ -22,6 +22,9 @@ interface PontoTuristicoDAO {
     @Query("SELECT * FROM PontoTuristico WHERE uid IN (:userIds)")
     fun loadAllByIds(userIds: IntArray): List<PontoTuristico>
 
+    @Query("SELECT * FROM PontoTuristico WHERE nome LIKE :name || '%'")
+    fun getByName(name: String): PontoTuristico?
+
     @Insert
     fun insertAll(vararg pontosTuristicos: PontoTuristico)
 

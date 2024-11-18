@@ -126,14 +126,12 @@ class CadastrarActivity : AppCompatActivity() {
         textLongitude.setText(ponto.longitude)
         textEndereco.setText(ponto.endereco)
         val imagemCaminho = ponto.imagem
-        println(imagemCaminho)
 
         if (imagemCaminho != null) {
             if (imagemCaminho.isNotEmpty()) {
                 val file = File(imagemCaminho)
                 if (file.exists()) {
                     val bitmap = BitmapFactory.decodeFile(file.absolutePath)
-                    println(bitmap)
 
                     if (bitmap != null)
                         ivImagem.setImageBitmap(bitmap)
@@ -146,7 +144,6 @@ class CadastrarActivity : AppCompatActivity() {
                 Toast.makeText(this, "Nenhuma imagem associada a este ponto.", Toast.LENGTH_SHORT).show()
             }
         }
-
     }
 
     private fun configureButtons() {
@@ -245,6 +242,15 @@ class CadastrarActivity : AppCompatActivity() {
         }
     }
 
+    @Deprecated("This method has been deprecated in favor of using the Activity Result API" +
+            "\n      which brings increased type safety via an {@link ActivityResultContract} and the prebuilt" +
+            "\n      contracts for common intents available in" +
+            "\n      {@link androidx.activity.result.contract.ActivityResultContracts}, provides hooks for" +
+            "\n      testing, and allow receiving results in separate, testable classes independent from your" +
+            "\n      activity. Use" +
+            "\n      {@link #registerForActivityResult(ActivityResultContract, ActivityResultCallback)}" +
+            "\n      with the appropriate {@link ActivityResultContract} and handling the result in the" +
+            "\n      {@link ActivityResultCallback#onActivityResult(Object) callback}.")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == requestImageCapture && resultCode == Activity.RESULT_OK) {

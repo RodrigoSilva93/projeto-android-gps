@@ -1,7 +1,7 @@
 package br.edu.utfpr.pontosturisticos.ui
 
-import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,11 +10,11 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import br.edu.utfpr.pontosturisticos.MainActivity
 import br.edu.utfpr.pontosturisticos.R
 import br.edu.utfpr.pontosturisticos.entities.PontoTuristico
 import br.edu.utfpr.pontosturisticos.utils.singleton.DatabaseSingleton
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import java.io.File
 
 class DetalhesPontoFragment : BottomSheetDialogFragment() {
 
@@ -50,6 +50,28 @@ class DetalhesPontoFragment : BottomSheetDialogFragment() {
             tvEndereco.text = it.getString("ENDERECO")
             tvLatitude.text = it.getString("LATITUDE")
             tvLongitude.text = it.getString("LONGITUDE")
+
+            val imagemCaminho = it.getString("IMAGEM")
+            println(imagemCaminho)
+
+            if (imagemCaminho != null) {
+                if (imagemCaminho.isNotEmpty()) {
+                    val file = File(imagemCaminho)
+                    if (file.exists()) {
+                        val bitmap = BitmapFactory.decodeFile(file.absolutePath)
+                        println(bitmap)
+
+                        if (bitmap != null)
+                            ivDetailImagem.setImageBitmap(bitmap)
+                        else
+                            Toast.makeText(context, "Erro ao carregar a imagem.", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(context, "Imagem não encontrada.", Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    Toast.makeText(context, "Nenhuma imagem associada a este ponto.", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
 
         btnEditar.setOnClickListener {
@@ -88,6 +110,7 @@ class DetalhesPontoFragment : BottomSheetDialogFragment() {
                 putString("ENDERECO", ponto.endereco)
                 putString("LATITUDE", ponto.latitude)
                 putString("LONGITUDE", ponto.longitude)
+                putString("IMAGEM", ponto.imagem)
             }
             fragment.arguments = args
             fragment.onDataChanged = onDataChanged
