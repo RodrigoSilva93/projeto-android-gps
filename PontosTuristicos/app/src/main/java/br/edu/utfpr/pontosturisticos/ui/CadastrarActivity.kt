@@ -56,6 +56,8 @@ class CadastrarActivity : AppCompatActivity() {
     private var pontoId: Int = 0
     private var isEditMode: Boolean = false
 
+    private var caminhoImagemOriginal: String = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cadastrar)
@@ -120,12 +122,14 @@ class CadastrarActivity : AppCompatActivity() {
         val db = DatabaseSingleton.getInstance(this).getAppDatabase()
         val ponto = db.pontoTuristicoDao().getById(id)
 
+
         textNome.setText(ponto.nome)
         textDescricao.setText(ponto.descricao)
         textLatitude.setText(ponto.latitude)
         textLongitude.setText(ponto.longitude)
         textEndereco.setText(ponto.endereco)
         val imagemCaminho = ponto.imagem
+        caminhoImagemOriginal = ponto.imagem ?: ""
 
         if (imagemCaminho != null) {
             if (imagemCaminho.isNotEmpty()) {
@@ -187,6 +191,10 @@ class CadastrarActivity : AppCompatActivity() {
             endereco = textEndereco.text.toString(),
             imagem = imageFile?.absolutePath ?: ""
         )
+
+        if (ponto.imagem == "") {
+            ponto.imagem = caminhoImagemOriginal
+        }
 
         if (isEditMode) {
             db.pontoTuristicoDao().update(ponto)
