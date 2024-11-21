@@ -25,6 +25,9 @@ interface PontoTuristicoDAO {
     @Query("SELECT * FROM PontoTuristico WHERE nome LIKE :name || '%'")
     fun getByName(name: String): PontoTuristico?
 
+    @Query("SELECT * FROM PontoTuristico WHERE nome = :name LIMIT 1")
+    fun getByExactlyName(name: String): PontoTuristico?
+
     @Insert
     fun insertAll(vararg pontosTuristicos: PontoTuristico)
 
