@@ -4,6 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <SearchView
+        android:id="@+id/svPesquisa"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:queryHint="Pesquisa por nome"
+        android:iconifiedByDefault="false"
+        android:layout_margin="10dp" />
     <ListView
         android:id="@+id/lvLista"
         android:layout_width="match_parent"

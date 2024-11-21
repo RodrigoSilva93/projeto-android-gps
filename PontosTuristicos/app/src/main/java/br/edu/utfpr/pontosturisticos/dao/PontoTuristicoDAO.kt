@@ -37,4 +37,6 @@ interface PontoTuristicoDAO {
     @Query("SELECT * FROM PontoTuristico WHERE nome = :name LIMIT 1")
     fun getByExactlyName(name: String): PontoTuristico?
 
+    @Query("SELECT * FROM PontoTuristico WHERE nome LIKE '%' || :name || '%'")
+    fun getByNameLike(name: String): List<PontoTuristico>
 }
