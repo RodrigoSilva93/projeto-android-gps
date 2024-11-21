@@ -31,4 +31,5 @@
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="foto_ponto_turistico">Foto Ponto Turístico</string>
     <string name="adicionar_imagem">Adicionar Imagem</string>
+    <string name="buscar_ponto_turistico">Buscar ponto turístico</string>
 </resources>

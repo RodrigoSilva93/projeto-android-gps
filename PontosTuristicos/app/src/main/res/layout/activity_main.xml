@@ -7,6 +7,26 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <SearchView
+        android:id="@+id/svBusca"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentTop="true"
+        android:layout_margin="16dp"
+        android:background="@drawable/rounded_corner_bg"
+        android:elevation="8dp"
+        android:hint="@string/buscar_ponto_turistico"
+        android:theme="@style/AppSearchView"
+        android:inputType="text"
+        android:padding="12dp"
+        android:textSize="16sp" />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btCadastrar"
         android:layout_width="wrap_content"
@@ -37,11 +57,5 @@
         android:layout_above="@+id/btListar"
         android:contentDescription="@string/configuracoes_aplicativo"
         app:srcCompat="@android:drawable/ic_menu_manage" />
-
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/map"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
 
 </RelativeLayout>

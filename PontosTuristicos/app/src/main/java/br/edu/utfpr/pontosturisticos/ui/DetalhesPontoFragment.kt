@@ -1,6 +1,5 @@
 package br.edu.utfpr.pontosturisticos.ui
 
-import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
@@ -11,7 +10,6 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import br.edu.utfpr.pontosturisticos.MainActivity
 import br.edu.utfpr.pontosturisticos.R
 import br.edu.utfpr.pontosturisticos.entities.PontoTuristico
 import br.edu.utfpr.pontosturisticos.utils.singleton.DatabaseSingleton

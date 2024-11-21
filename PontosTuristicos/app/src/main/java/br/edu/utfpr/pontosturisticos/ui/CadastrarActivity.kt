@@ -55,6 +55,7 @@ class CadastrarActivity : AppCompatActivity() {
 
     private var pontoId: Int = 0
     private var isEditMode: Boolean = false
+    private var caminhoImagemOriginal: String = ""
 
     private var caminhoImagemOriginal: String = ""
 
@@ -136,7 +137,6 @@ class CadastrarActivity : AppCompatActivity() {
                 val file = File(imagemCaminho)
                 if (file.exists()) {
                     val bitmap = BitmapFactory.decodeFile(file.absolutePath)
-                    println(bitmap)
 
                     if (bitmap != null)
                         ivImagem.setImageBitmap(bitmap)
@@ -192,9 +192,7 @@ class CadastrarActivity : AppCompatActivity() {
             imagem = imageFile?.absolutePath ?: ""
         )
 
-        if (ponto.imagem == "") {
-            ponto.imagem = caminhoImagemOriginal
-        }
+        if (ponto.imagem == "") ponto.imagem = caminhoImagemOriginal
 
         if (isEditMode) {
             db.pontoTuristicoDao().update(ponto)
@@ -251,6 +249,15 @@ class CadastrarActivity : AppCompatActivity() {
         }
     }
 
+    @Deprecated("This method has been deprecated in favor of using the Activity Result API" +
+            "\n      which brings increased type safety via an {@link ActivityResultContract} and the prebuilt" +
+            "\n      contracts for common intents available in" +
+            "\n      {@link androidx.activity.result.contract.ActivityResultContracts}, provides hooks for" +
+            "\n      testing, and allow receiving results in separate, testable classes independent from your" +
+            "\n      activity. Use" +
+            "\n      {@link #registerForActivityResult(ActivityResultContract, ActivityResultCallback)}" +
+            "\n      with the appropriate {@link ActivityResultContract} and handling the result in the" +
+            "\n      {@link ActivityResultCallback#onActivityResult(Object) callback}.")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == requestImageCapture && resultCode == Activity.RESULT_OK) {

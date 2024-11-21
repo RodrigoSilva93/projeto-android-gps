@@ -7,9 +7,11 @@ import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
-import android.preference.PreferenceManager
+import android.widget.SearchView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.preference.PreferenceManager
 import br.edu.utfpr.pontosturisticos.entities.PontoTuristico
 import br.edu.utfpr.pontosturisticos.ui.CadastrarActivity
 import br.edu.utfpr.pontosturisticos.ui.DetalhesPontoFragment
@@ -31,6 +33,7 @@ class MainActivity : AppCompatActivity(), LocationListener, OnMapReadyCallback {
     private lateinit var btCadastrar: FloatingActionButton
     private lateinit var btLista: FloatingActionButton
     private lateinit var btConfig: FloatingActionButton
+    private lateinit var svBusca: SearchView
 
     private lateinit var mMap: GoogleMap
 
@@ -41,7 +44,8 @@ class MainActivity : AppCompatActivity(), LocationListener, OnMapReadyCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-		
+
+        svBusca = findViewById(R.id.svBusca)
         btLista = findViewById(R.id.btListar)
         btCadastrar = findViewById(R.id.btCadastrar)
         btConfig= findViewById(R.id.btConfig)
@@ -63,9 +67,34 @@ class MainActivity : AppCompatActivity(), LocationListener, OnMapReadyCallback {
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
+        val db = DatabaseSingleton.getInstance(this).getAppDatabase()
+
         btCadastrar.setOnClickListener { addPontoTuristico() }
         btLista.setOnClickListener { listarPontosTuristicos() }
         btConfig.setOnClickListener { abrirConfiguracoes() }
+        svBusca.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                query?.let {
+                    val ponto = db.pontoTuristicoDao().getByName(it)
+                    if (ponto != null) {
+                        val latLng = ponto.latitude?.let { it1 -> ponto.longitude?.let { it2 -> LatLng(it1.toDouble(), it2.toDouble()) } }
+                        latLng?.let { it1 -> CameraUpdateFactory.newLatLng(it1) }
+                            ?.let { it2 -> mMap.animateCamera(it2) }
+
+                        val detalhesFragment = DetalhesPontoFragment.newInstance(ponto){
+                            carregarMarcadores()
+                        }
+                        detalhesFragment.show(supportFragmentManager, "DetalhesPontoFragment")
+                    } else
+                        Toast.makeText(this@MainActivity, "Ponto Turístico não encontrado.", Toast.LENGTH_SHORT).show()
+                }
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return false
+            }
+        })
     }
 
     override fun onResume() {
