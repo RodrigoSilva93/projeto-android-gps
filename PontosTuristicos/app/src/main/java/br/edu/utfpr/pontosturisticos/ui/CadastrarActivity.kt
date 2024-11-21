@@ -55,6 +55,7 @@ class CadastrarActivity : AppCompatActivity() {
 
     private var pontoId: Int = 0
     private var isEditMode: Boolean = false
+    private var caminhoImagemOriginal: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -126,6 +127,7 @@ class CadastrarActivity : AppCompatActivity() {
         textLongitude.setText(ponto.longitude)
         textEndereco.setText(ponto.endereco)
         val imagemCaminho = ponto.imagem
+        caminhoImagemOriginal = ponto.imagem ?: ""
 
         if (imagemCaminho != null) {
             if (imagemCaminho.isNotEmpty()) {
@@ -186,6 +188,8 @@ class CadastrarActivity : AppCompatActivity() {
             endereco = textEndereco.text.toString(),
             imagem = imageFile?.absolutePath ?: ""
         )
+
+        if (ponto.imagem == "") ponto.imagem = caminhoImagemOriginal
 
         if (isEditMode) {
             db.pontoTuristicoDao().update(ponto)
