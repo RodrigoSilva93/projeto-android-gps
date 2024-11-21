@@ -74,7 +74,7 @@ class MainActivity : AppCompatActivity(), LocationListener, OnMapReadyCallback {
         btConfig.setOnClickListener { abrirConfiguracoes() }
         svBusca.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                query?.let {
+                query?.trim()?.let {
                     val ponto = db.pontoTuristicoDao().getByName(it)
                     if (ponto != null) {
                         val latLng = ponto.latitude?.let { it1 -> ponto.longitude?.let { it2 -> LatLng(it1.toDouble(), it2.toDouble()) } }
@@ -94,10 +94,12 @@ class MainActivity : AppCompatActivity(), LocationListener, OnMapReadyCallback {
             override fun onQueryTextChange(query: String?): Boolean {
                 query?.trim()?.let {
                     val ponto = db.pontoTuristicoDao().getByExactlyName(it)
+
                     if (ponto != null && ponto.nome == query) {
                         val latLng = ponto.latitude?.let { it1 -> ponto.longitude?.let { it2 -> LatLng(it1.toDouble(), it2.toDouble()) } }
                         latLng?.let { it1 -> CameraUpdateFactory.newLatLng(it1) }
                             ?.let { it2 -> mMap.animateCamera(it2) }
+
                         val detalhesFragment = DetalhesPontoFragment.newInstance(ponto) {
                             carregarMarcadores()
                         }

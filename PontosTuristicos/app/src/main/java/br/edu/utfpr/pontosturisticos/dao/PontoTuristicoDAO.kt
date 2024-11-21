@@ -33,4 +33,8 @@ interface PontoTuristicoDAO {
 
     @Update
     fun update(vararg pontosTuristicos: PontoTuristico)
+
+    @Query("SELECT * FROM PontoTuristico WHERE nome = :name LIMIT 1")
+    fun getByExactlyName(name: String): PontoTuristico?
+
 }
