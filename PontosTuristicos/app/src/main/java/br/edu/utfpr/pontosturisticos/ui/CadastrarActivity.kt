@@ -57,7 +57,7 @@ class CadastrarActivity : AppCompatActivity() {
     private var isEditMode: Boolean = false
     private var caminhoImagemOriginal: String = ""
 
-    private var caminhoImagemOriginal: String = ""
+    //fixed remoção de variavel duplicada
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
