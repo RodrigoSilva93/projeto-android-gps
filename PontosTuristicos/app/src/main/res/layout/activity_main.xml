@@ -16,7 +16,7 @@
     <SearchView
         android:id="@+id/svBusca"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_margin="16dp"
         android:background="@drawable/rounded_corner_bg"
@@ -25,7 +25,8 @@
         android:theme="@style/AppSearchView"
         android:inputType="text"
         android:padding="12dp"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:iconifiedByDefault="false"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btCadastrar"
